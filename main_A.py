@@ -22,12 +22,14 @@ def PSP_value_calculation(raw_data, sampling_frequancy, frequancy_band=(0.01, 0.
 
 
 def main():
-    raw_data = mne.io.read_raw_snirf("replace_with_path_to_your_snirf_file",
+    raw_data = mne.io.read_raw_snirf("Replace with your snrif file",
                                      preload=True)  # loads the raw data in a variable
     sample_frequency = raw_data.info["sfreq"]  # gets the sample frequency from the metadata of the snirf file
     n_channels = len(raw_data.ch_names)  # counts the number of channels
+    raw_data = mne.preprocessing.nirs.optical_density(raw_data)  # getting the opticall density
     sci_values = SCI_value_calculation(raw_data)  # calculates the SCI
     psp_values = PSP_value_calculation(raw_data, sample_frequency)  # calculates the PSP
+
     # starts making the plot
     fig, ax = plt.subplots(figsize=(10, 5))
     width = 0.35
